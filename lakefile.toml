@@ -1,0 +1,10 @@
+name = "proof101-problems"
+version = "0.1.0"
+defaultTargets = ["proof101-problems"]
+
+[[lean_lib]]
+name = "Proof101Problems"
+
+[[lean_exe]]
+name = "proof101-problems"
+root = "Main"
