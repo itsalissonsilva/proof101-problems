@@ -229,15 +229,19 @@ in subsequent proofs.
 Theorem: Appending the empty list on the right is the identity.
 -/
 theorem app_nil {α : Type} (xs : List α) : app xs [] = xs := by
-  sorry
+  induction xs with
+  | nil => rfl
+  | cons x xs ih => simp [app, ih]
 
 
 /- Problem 3.2 (8 points)
 Theorem: Append is associative.
 -/
 theorem app_assoc {α : Type} (xs ys zs : List α) :
-    app (app xs ys) zs = app xs (app ys zs) := by
-  sorry
+  app (app xs ys) zs = app xs (app ys zs) := by
+induction xs with
+| nil => rfl
+| cons x xs ih => simp [app, ih]
 
 
 /- Problem 3.3 (7 points)
