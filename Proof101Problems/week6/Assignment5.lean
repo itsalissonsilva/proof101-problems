@@ -112,7 +112,10 @@ constructor, cases, obtain, left, and right is enough.
 Theorem: Transitivity of implication.
 -/
 theorem imp_trans (P Q R : Prop) : (P → Q) → (Q → R) → P → R := by
-  sorry
+  intro hpq hqr hp
+  apply hqr
+  apply hpq
+  exact hp
 
 
 /- Problem 1.2 (5 points)
@@ -121,16 +124,22 @@ Hint: After introducing hypotheses, use `constructor` to split the ∧ goal
 into two separate subgoals.
 -/
 theorem imp_and_intro (P Q R : Prop) : (P → Q) → (P → R) → P → Q ∧ R := by
-  sorry
+  intro hpq hpr hp
+  constructor
+  · exact hpq hp 
+  · exact hpr hp
 
 
 /- Problem 1.3 (5 points)
 Theorem: ∧ distributes over ∨ (left to right).
 Hint: First `obtain` the two parts of the ∧. Then `cases` on the ∨ part.
 -/
-theorem and_or_distrib (P Q R : Prop) :
-    P ∧ (Q ∨ R) → (P ∧ Q) ∨ (P ∧ R) := by
-  sorry
+theorem and_or_distrib (P Q R : Prop) : P ∧ (Q ∨ R) → (P ∧ Q) ∨ (P ∧ R) := by
+  intro h
+  obtain ⟨hp, hqr⟩ := h
+  cases hqr with
+  | inl hq => left; exact ⟨hp, hq⟩
+  | inr hr => right; exact ⟨hp, hr⟩
 
 
 /- Problem 1.4 (5 points)
@@ -138,7 +147,7 @@ Provide a concrete existential witness.
 Hint: Use `exact ⟨witness, proof⟩`.
 -/
 theorem exists_witness : ∃ n : Nat, n * n + 3 * n + 2 = 12 := by
-  sorry
+  exact ⟨2, rfl⟩
 
 
 -- ============================================================================
@@ -162,7 +171,9 @@ Theorem: Our custom `double` agrees with multiplication by 2.
 Hint: Induction on n, then `simp [double]` to unfold...
 -/
 theorem double_eq_two_mul (n : Nat) : double n = 2 * n := by
-  sorry
+  induction n with
+  | zero => rfl
+  | succ n ih => simp [double]; omega
 
 
 /- Problem 2.2 (5 points)
@@ -179,8 +190,8 @@ A concrete arithmetic fact using omega.
 Hint: You should not necessarily use induction.
 -/
 theorem nat_squeeze (n : Nat) (h₁ : n > 5) (h₂ : n < 10) :
-    2 * n + 1 ≥ 13 := by
-  sorry
+  2 * n + 1 ≥ 13 := by
+  omega
 
 
 /- Problem 2.4 (5 points)
@@ -189,7 +200,9 @@ Hint: Induction on n. In the zero case, the hypothesis `h : 0 > 0` is
 contradictory — `omega` will close it.
 -/
 theorem double_pos (n : Nat) (h : n > 0) : double n > 0 := by
-  sorry
+  induction n with
+  | zero => omega
+  | succ n ih => simp [double]
 
 
 -- ============================================================================
